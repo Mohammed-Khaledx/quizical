@@ -77,7 +77,7 @@ function App() {
       });
     });
   }, [check]);
-  
+
   console.log(score);
 
   function collectAnswers(arr, e) {
