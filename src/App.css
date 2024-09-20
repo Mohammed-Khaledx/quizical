@@ -3,7 +3,7 @@ h3 {
   color: #323232;
 }
 body{
-  overflow: hidden;
+  height: 100vh;
 }
 
 main {
