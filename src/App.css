@@ -2,7 +2,7 @@ h3 {
   margin: 0;
   color: #323232;
 }
-body{
+body {
   height: 100vh;
 }
 
@@ -11,7 +11,6 @@ main {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  
 }
 
 .container {
@@ -21,16 +20,6 @@ main {
   margin: auto;
 }
 
-.questions {
-  /* margin: auto;
-  padding-top: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background-color: aliceblue;
-  width: fit-content; */
-}
 .question {
   padding: 20px 10px;
   border-bottom: solid 1px #cecece;
@@ -52,35 +41,40 @@ span button {
   border: 1px solid #777;
 }
 
-span button.selected{
+span button.selected {
   background-color: rgb(196, 207, 252);
 }
 
-span button.true{
+span button.true {
   background-color: rgb(60, 213, 98);
-
 }
 
-span button.false{
+span button.false {
   background-color: rgb(234, 102, 102);
-
 }
 
+.result {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  margin: 25px 100px;
+}
 
-
+.score {
+  color: green;
+}
 
 .submit {
-  display: flex;
   background-color:   rgb(128, 101, 218);
-  padding: 10px 30px;
+  padding: 20px 40px;
   color: white;
   border-radius: 10px;
   border: 1px solid;
   font-size: 20px;
-  margin: auto; 
-  margin-top: 30px;
   
 }
+
 .shape-one,
 .shape-two {
   position: absolute;
@@ -100,4 +94,20 @@ span button.false{
   left: -50px;
 
   background-color: rgb(145, 186, 186);
+}
+.starter--container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.starter {
+  background-color: rgb(128, 101, 218);
+  font-size: 30px;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid white;
+  padding: 20px 50px;
+  /* margin: auto; */
 }

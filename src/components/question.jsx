@@ -12,13 +12,13 @@ function Question(props) {
       cn = "false";
     }
     return (
-      <span className="answer">
+      <span className="answer" key={a.id}>
         <button id={a.id} onClick={props.choose} className={cn}>
           {a.value}
         </button>
       </span>
     );
-  });
+  }); 
 
   return (
     <div className="question">

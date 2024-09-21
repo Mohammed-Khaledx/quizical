@@ -2,17 +2,16 @@ import "./App.css";
 import Question from "./components/question.jsx";
 import React from "react";
 import { nanoid } from "nanoid";
+import Starter from "./components/starter.jsx";
 
 function App() {
-  const [loading, setLoading] = React.useState(true);
+  const [start, setStart] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [check, setCheck] = React.useState(false);
   const [replay, setReplay] = React.useState(0);
-  const [data, getData] = React.useState([]);
   const [mainQuestions, setMainQuestions] = React.useState([]);
-
   const [score, setScore] = React.useState(0);
-  // const [mainQuestions, setMainQuestions] = React.useState([]);
-  // const importantData = localData.results;
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,50 +32,33 @@ function App() {
             isCorrect: answer === obj.correct_answer,
           })),
         }));
-        getData(d.results);
+
         setMainQuestions(updatedQuestions);
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
         setLoading(false); // Stop loading when fetch is complete
+      } catch (error) {
+        
+          console.error("Error:", error);
+          setLoading(true);
+        
       }
     };
     fetchData();
   }, [replay]);
 
-  console.log(data);
-  // console.log(importantData);
-
-  // const [mainQuestions, setMainQuestions] = React.useState(
-
-  //   data.map((obj) => {
-  //     return {
-  //       ...obj,
-
-  //       Qid: nanoid(),
-  //       Answers: collectAnswers(obj.incorrect_answers, obj.correct_answer).map(
-  //         (answer, i) => {
-  //           return {
-  //             id: nanoid(),
-  //             value: answer,
-  //             selected: false,
-  //             isCorrect: answer === obj.correct_answer ? true : false,
-  //           };
-  //         }
-  //       ),
-  //     };
-  //   })
-  // );
-
-  React.useEffect(() => {
-    mainQuestions.forEach((Q) => {
-      Q.Answers.forEach((a) => {
+  // Function to calculate score
+  function calculateScore() {
+    let newScore = 0;
+    mainQuestions.forEach((q) => {
+      q.Answers.forEach((a) => {
         if (a.isCorrect && a.selected) {
-          setScore((s) => s + 1);
+          newScore += 1;
         }
       });
     });
-  }, [check]);
+    setScore(newScore);
+  }
+
+
 
   console.log(score);
 
@@ -89,26 +71,6 @@ function App() {
     }
     return newArr;
   }
-
-  // function choose(e) {
-  //   setMainQuestions((pQ) => {
-  //     return pQ.map((Q) => {
-  //       if (e.target.parentNode.parentNode.id === Q.Qid) {
-  //         return {
-  //           ...Q,
-  //           Answers: Q.Answers.map((a) => {
-  //             // console.log(e.target.parentNode.parentNode.id);
-  //             return a.id === e.target.id
-  //               ? { ...a, selected: !a.selected }
-  //               : { ...a, selected: false };
-  //           }),
-  //         };
-  //       } else {
-  //         return Q;
-  //       }
-  //     });
-  //   });
-  // }
 
   function choose(e) {
     const questionId = e.target.parentNode.parentNode.id; // Get question's unique ID
@@ -141,37 +103,17 @@ function App() {
   // console.log(mainQuestions);
 
   function click(e) {
-    setCheck(true);
-    if (e.target.innerHTML === "replay") {
+    if (e.target.innerHTML === "submit") {
+      setCheck(true);
+      calculateScore();
+    } else {
+      setLoading(true);
       setCheck(false);
       setReplay((pR) => pR + 1);
       setScore(0);
-      setMainQuestions(
-        data.map((obj) => {
-          return {
-            ...obj,
-            Qid: nanoid(),
-            Answers: collectAnswers(
-              obj.incorrect_answers,
-              obj.correct_answer
-            ).map((answer, i) => {
-              return {
-                id: nanoid(),
-                value: answer,
-                selected: false,
-                isCorrect: answer === obj.correct_answer ? true : false,
-              };
-            }),
-          };
-        })
-      );
     }
   }
 
-  // Show a loading screen until the fetching is finished
-  if (loading) {
-    return <p>Loading questions...</p>;
-  }
 
   const QuestionArray = mainQuestions.map((q) => {
     return (
@@ -187,15 +129,29 @@ function App() {
     );
   });
 
+  function toggle() {
+    setStart(true);
+  }
+
+  if (!start) {
+    return <Starter toggle={toggle} />;
+  }
+    // Show a loading screen until the fetching is finished
+    if (loading && start === true) {
+      return <p>Loading questions...</p>;
+    }
+  
   return (
     <main>
       <div className="shape-one"></div>
       <div className="container">
         <div className="questions">{QuestionArray}</div>
-        {check && <h2>your Score {score}</h2>}
-        <button className="submit" onClick={click}>
-          {!check ? "submit" : "replay"}
-        </button>
+        <div className="result">
+          <button className="submit" onClick={click}>
+            {!check ? "submit" : "replay"}
+          </button>
+          {check && <h3 className="score">your Score {score}</h3>}
+        </div>
       </div>
       <div className="shape-two"></div>
     </main>
